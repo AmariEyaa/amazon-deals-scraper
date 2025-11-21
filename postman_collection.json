@@ -1,0 +1,332 @@
+{
+  "info": {
+    "name": "Amazon Deals API",
+    "description": "Complete API collection for Amazon Deals Scraper with all endpoints and example queries",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Root",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": ["{{base_url}}"],
+          "path": [""]
+        },
+        "description": "Get API information and available endpoints"
+      }
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/health",
+          "host": ["{{base_url}}"],
+          "path": ["health"]
+        },
+        "description": "Check API and database health status"
+      }
+    },
+    {
+      "name": "Statistics",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/stats",
+          "host": ["{{base_url}}"],
+          "path": ["stats"]
+        },
+        "description": "Get database statistics (products, categories, brands, averages)"
+      }
+    },
+    {
+      "name": "List All Products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?page=1&limit=50",
+          "host": ["{{base_url}}"],
+          "path": ["products"],
+          "query": [
+            {"key": "page", "value": "1", "description": "Page number"},
+            {"key": "limit", "value": "50", "description": "Items per page"}
+          ]
+        },
+        "description": "List all products with pagination"
+      }
+    },
+    {
+      "name": "Filter by Category",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?category=laptop&page=1&limit=20",
+          "host": ["{{base_url}}"],
+          "path": ["products"],
+          "query": [
+            {"key": "category", "value": "laptop", "description": "Filter by category"},
+            {"key": "page", "value": "1"},
+            {"key": "limit", "value": "20"}
+          ]
+        },
+        "description": "Get products in laptop category"
+      }
+    },
+    {
+      "name": "Filter by Price Range",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?min_price=100&max_price=500&page=1",
+          "host": ["{{base_url}}"],
+          "path": ["products"],
+          "query": [
+            {"key": "min_price", "value": "100", "description": "Minimum price"},
+            {"key": "max_price", "value": "500", "description": "Maximum price"},
+            {"key": "page", "value": "1"}
+          ]
+        },
+        "description": "Get products between $100 and $500"
+      }
+    },
+    {
+      "name": "Filter by Rating",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?min_rating=4.5&page=1",
+          "host": ["{{base_url}}"],
+          "path": ["products"],
+          "query": [
+            {"key": "min_rating", "value": "4.5", "description": "Minimum rating"},
+            {"key": "page", "value": "1"}
+          ]
+        },
+        "description": "Get products with rating 4.5 or higher"
+      }
+    },
+    {
+      "name": "Filter by Discount",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?min_discount=30&page=1",
+          "host": ["{{base_url}}"],
+          "path": ["products"],
+          "query": [
+            {"key": "min_discount", "value": "30", "description": "Minimum discount %"},
+            {"key": "page", "value": "1"}
+          ]
+        },
+        "description": "Get products with 30% or more discount"
+      }
+    },
+    {
+      "name": "Search Products",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?search=macbook&page=1",
+          "host": ["{{base_url}}"],
+          "path": ["products"],
+          "query": [
+            {"key": "search", "value": "macbook", "description": "Search term"},
+            {"key": "page", "value": "1"}
+          ]
+        },
+        "description": "Search products by title or brand"
+      }
+    },
+    {
+      "name": "Sort by Price (Ascending)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?sort_by=price&order=asc&page=1",
+          "host": ["{{base_url}}"],
+          "path": ["products"],
+          "query": [
+            {"key": "sort_by", "value": "price", "description": "Sort field"},
+            {"key": "order", "value": "asc", "description": "Sort order"},
+            {"key": "page", "value": "1"}
+          ]
+        },
+        "description": "Get products sorted by price (low to high)"
+      }
+    },
+    {
+      "name": "Sort by Rating (Descending)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?sort_by=rating&order=desc&page=1",
+          "host": ["{{base_url}}"],
+          "path": ["products"],
+          "query": [
+            {"key": "sort_by", "value": "rating", "description": "Sort field"},
+            {"key": "order", "value": "desc", "description": "Sort order"},
+            {"key": "page", "value": "1"}
+          ]
+        },
+        "description": "Get products sorted by rating (high to low)"
+      }
+    },
+    {
+      "name": "Complex Filter (Category + Price + Rating)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products?category=laptop&min_price=500&max_price=2000&min_rating=4.0&sort_by=discount&order=desc",
+          "host": ["{{base_url}}"],
+          "path": ["products"],
+          "query": [
+            {"key": "category", "value": "laptop"},
+            {"key": "min_price", "value": "500"},
+            {"key": "max_price", "value": "2000"},
+            {"key": "min_rating", "value": "4.0"},
+            {"key": "sort_by", "value": "discount"},
+            {"key": "order", "value": "desc"}
+          ]
+        },
+        "description": "Laptops between $500-$2000, rating 4.0+, sorted by discount"
+      }
+    },
+    {
+      "name": "Get Single Product",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/products/B08N5WRWNW?include_history=true",
+          "host": ["{{base_url}}"],
+          "path": ["products", "B08N5WRWNW"],
+          "query": [
+            {"key": "include_history", "value": "true", "description": "Include price history"}
+          ]
+        },
+        "description": "Get product details by ASIN with price history"
+      }
+    },
+    {
+      "name": "List Categories",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/categories",
+          "host": ["{{base_url}}"],
+          "path": ["categories"]
+        },
+        "description": "Get all available categories with product counts"
+      }
+    },
+    {
+      "name": "List All Brands",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/brands",
+          "host": ["{{base_url}}"],
+          "path": ["brands"]
+        },
+        "description": "Get all brands with statistics"
+      }
+    },
+    {
+      "name": "Brands by Category",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/brands?category=laptop",
+          "host": ["{{base_url}}"],
+          "path": ["brands"],
+          "query": [
+            {"key": "category", "value": "laptop"}
+          ]
+        },
+        "description": "Get brands in laptop category with stats"
+      }
+    },
+    {
+      "name": "Best Deals (All)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/best-deals?min_discount=20&min_rating=4.0&page=1&limit=20",
+          "host": ["{{base_url}}"],
+          "path": ["best-deals"],
+          "query": [
+            {"key": "min_discount", "value": "20", "description": "Minimum discount %"},
+            {"key": "min_rating", "value": "4.0", "description": "Minimum rating"},
+            {"key": "page", "value": "1"},
+            {"key": "limit", "value": "20"}
+          ]
+        },
+        "description": "Get top deals with 20%+ discount and 4.0+ rating"
+      }
+    },
+    {
+      "name": "Best Deals (Premium)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/best-deals?min_discount=30&min_rating=4.5&min_reviews=100&limit=10",
+          "host": ["{{base_url}}"],
+          "path": ["best-deals"],
+          "query": [
+            {"key": "min_discount", "value": "30", "description": "30%+ discount"},
+            {"key": "min_rating", "value": "4.5", "description": "4.5+ stars"},
+            {"key": "min_reviews", "value": "100", "description": "100+ reviews"},
+            {"key": "limit", "value": "10"}
+          ]
+        },
+        "description": "Premium deals: 30%+ off, 4.5+ stars, 100+ reviews"
+      }
+    },
+    {
+      "name": "Best Deals by Category",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/best-deals?category=laptop&min_discount=25&min_rating=4.0&limit=10",
+          "host": ["{{base_url}}"],
+          "path": ["best-deals"],
+          "query": [
+            {"key": "category", "value": "laptop"},
+            {"key": "min_discount", "value": "25"},
+            {"key": "min_rating", "value": "4.0"},
+            {"key": "limit", "value": "10"}
+          ]
+        },
+        "description": "Best laptop deals with 25%+ discount"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    }
+  ]
+}

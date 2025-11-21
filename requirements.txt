@@ -3,7 +3,7 @@ numpy==2.0.1
 pandas==2.2.2
 
 
-# Web Scraping - Playwright (chosen tech stack)
+# Web Scraping
 playwright==1.40.0
 requests==2.31.0
 fake-useragent==1.4.0
