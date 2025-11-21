@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Deals Finder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .search-bar {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+
+        .product-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .product-brand {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .current-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .original-price {
+            font-size: 16px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .discount-badge {
+            background: #ff4444;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .stars {
+            color: #ffa500;
+            font-size: 18px;
+        }
+
+        .reviews {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .availability {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .in-stock {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .out-stock {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            color: white;
+            font-size: 20px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: white;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🛒 Amazon Deals Finder</h1>
+            <p>Find the best deals on Amazon products</p>
+        </header>
+
+        <div class="search-bar">
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="category">Category</label>
+                    <select id="category">
+                        <option value="">All Categories</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Computers">Computers</option>
+                        <option value="Home">Home & Kitchen</option>
+                        <option value="Sports">Sports & Outdoors</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="minPrice">Min Price ($)</label>
+                    <input type="number" id="minPrice" placeholder="0" min="0">
+                </div>
+
+                <div class="filter-group">
+                    <label for="maxPrice">Max Price ($)</label>
+                    <input type="number" id="maxPrice" placeholder="1000" min="0">
+                </div>
+
+                <div class="filter-group">
+                    <label for="minRating">Min Rating</label>
+                    <select id="minRating">
+                        <option value="0">Any Rating</option>
+                        <option value="3">3+ Stars</option>
+                        <option value="4">4+ Stars</option>
+                        <option value="4.5">4.5+ Stars</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="searchDeals()">🔍 Search Best Deals</button>
+        </div>
+
+        <div id="results" class="products-grid"></div>
+    </div>
+
+    <script>
+        // Load deals from local JSON file
+        async function searchDeals() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="loading">🔄 Finding best deals...</div>';
+
+            try {
+                // Load the JSON file
+                const response = await fetch('sample_products.json');
+                const data = await response.json();
+                
+                // Extract all products from nested structure
+                let products = [];
+                for (const category in data) {
+                    if (data[category].products && Array.isArray(data[category].products)) {
+                        products = products.concat(data[category].products);
+                    }
+                }
+
+                // Get filter values
+                const categoryFilter = document.getElementById('category').value;
+                const minPrice = parseFloat(document.getElementById('minPrice').value) || 0;
+                const maxPrice = parseFloat(document.getElementById('maxPrice').value) || 10000;
+                const minRating = parseFloat(document.getElementById('minRating').value) || 0;
+
+                // Apply filters
+                products = products.filter(p => {
+                    const price = p.current_price || p.price || 0;
+                    return (
+                        (!categoryFilter || p.category === categoryFilter) &&
+                        (price >= minPrice) &&
+                        (price <= maxPrice) &&
+                        (p.rating >= minRating) &&
+                        (price > 0) // Exclude products without price
+                    );
+                });
+
+                // Calculate deal score: (discount% × 0.6) + (rating × 10)
+                products = products.map(p => ({
+                    ...p,
+                    price: p.current_price || p.price,
+                    discount_percent: p.discount_percentage || p.discount_percent,
+                    dealScore: ((p.discount_percentage || p.discount_percent || 0) * 0.6) + ((p.rating || 0) * 10)
+                }));
+
+                // Sort by deal score (BEST DEALS FIRST)
+                products.sort((a, b) => b.dealScore - a.dealScore);
+
+                // Display results
+                if (products.length === 0) {
+                    resultsDiv.innerHTML = '<div class="no-results">No products found. Try adjusting your filters.</div>';
+                    return;
+                }
+
+                // Display results
+                resultsDiv.innerHTML = products.slice(0, 12).map((product, index) => `
+                    <div class="product-card" style="${index < 3 ? 'border: 3px solid #FFD700; box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);' : ''}">
+                        ${index < 3 ? `<div style="background: linear-gradient(135deg, #FFD700, #FFA500); color: white; padding: 8px; border-radius: 8px 8px 0 0; margin: -20px -20px 15px -20px; text-align: center; font-weight: bold;">🏆 BEST DEAL #${index + 1} - Score: ${product.dealScore.toFixed(1)}</div>` : ''}
+                        <img src="${product.image_url || 'https://via.placeholder.com/200'}" 
+                             alt="${product.title}" 
+                             class="product-image"
+                             onerror="this.src='https://via.placeholder.com/200?text=No+Image'">
+                        <div class="product-title">${product.title}</div>
+                        <div class="product-brand">${product.brand || 'Unknown Brand'}</div>
+                        <div class="product-price">
+                            <span class="current-price">$${(product.price || 0).toFixed(2)}</span>
+                            ${product.original_price ? `<span class="original-price">$${product.original_price.toFixed(2)}</span>` : ''}
+                            ${(product.discount_percent || 0) > 0 ? `<span class="discount-badge">${product.discount_percent}% OFF</span>` : ''}
+                        </div>
+                        <div class="product-rating">
+                            <span class="stars">${'⭐'.repeat(Math.round(product.rating || 0))}</span>
+                            <span class="reviews">${product.rating || 0} (${product.review_count || product.reviews || 0} reviews)</span>
+                        </div>
+                        <div style="margin: 10px 0; padding: 8px; background: #f0f0f0; border-radius: 5px; font-size: 13px;">
+                            <strong>Deal Score:</strong> ${product.dealScore.toFixed(1)} 
+                            <span style="color: #666;">(${product.discount_percent || 0}% × 0.6 + ${product.rating || 0}★ × 10)</span>
+                        </div>
+                        <span class="availability ${product.availability === 'In Stock' ? 'in-stock' : 'out-stock'}">
+                            ${product.availability || 'Check Availability'}
+                        </span>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                resultsDiv.innerHTML = '<div class="no-results">⚠️ Error loading products. Make sure sample_products.json is in the same folder.</div>';
+                console.error('Error:', error);
+            }
+        }
+
+        // Load deals on page load
+        window.onload = () => searchDeals();
+    </script>
+</body>
+</html>
